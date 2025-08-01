@@ -41,6 +41,15 @@ Pkg.add(url="https://github.com/ManuelStapper/BaselineModels.jl", rev="afaafc871
 - **`Plotting.jl`**: Functions for plotting maps using above shapefiles
 - **`Results.jl`**: Main analysis script
 
-
+## Dependencies
+- CSV (0.10.15)
+- DataFrames (1.7.0)
+- Plots (1.40.13)
+- StatsBase (0.34.5)
+- Optim (1.12.0)
+- Distributions (0.25.120)
+- Shapefile (0.13.2)
+- Date
+- Random
 
 
