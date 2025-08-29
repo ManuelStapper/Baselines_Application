@@ -3,7 +3,7 @@
 #########################################################
 
 # Set path here
-# path = 
+path = "/Users/lshms101/Desktop/Projects/Baselines/Data"
 cd(path)
 using CSV, DataFrames, Dates, Plots, BaselineModels
 

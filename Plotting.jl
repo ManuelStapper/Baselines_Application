@@ -2,10 +2,10 @@ using Plots, Shapefile, GeoDataFrames, CSV, DataFrames, LibGEOS, StatsBase, GeoI
 
 # Set path here
 # path = 
-shp = Shapefile.Table(path*"/Shapefile/StatesZoom.shp")
-shpLines = Shapefile.Table(path*"/Shapefile/StatesLines.shp")
-shpTiles = Shapefile.Table(path*"/Shapefile/StatesTiles.shp")
-shpHex = Shapefile.Table(path*"/Shapefile/StatesHex.shp")
+shp = Shapefile.Table(path*"Data/Shapefile/StatesZoom.shp")
+shpLines = Shapefile.Table(path*"Data/Shapefile/StatesLines.shp")
+shpTiles = Shapefile.Table(path*"Data/Shapefile/StatesTiles.shp")
+shpHex = Shapefile.Table(path*"Data/Shapefile/StatesHex.shp")
 
 centres = (i -> [mean((z -> z.x).(shp.geometry[i].points)), mean((z -> z.y).(shp.geometry[i].points))]).(1:52)
 centre = [mean((x -> x[1]).(centres)), mean((x -> x[2]).(centres))]

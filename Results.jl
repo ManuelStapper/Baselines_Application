@@ -25,8 +25,9 @@ using CSV, DataFrames, Dates, Plots
 using BaselineModels
 using StatsBase, Random, Optim, Distributions
 
+
 # Set path to data here
-# path = 
+path = "/Users/lshms101/Desktop/Projects/Baselines/Data"
 
 # Load and prepare baseline forecasts
 
@@ -101,7 +102,7 @@ end
 
 # Load and prepare model forecasts
 # Set path to code here
-# path = 
+path = "/Users/lshms101/Desktop/Projects/Baselines/Code"
 
 include(path*"/InputPrep.jl")
 cd(path)
@@ -195,7 +196,7 @@ end
 ### Assess calibration
 
 # Set path to general folder here
-# path = 
+path = "/Users/lshms101/Desktop/Projects/Baselines/"
 
 models = sort(unique(iBase.model))
 modelsC = sort(unique(cBase.model))
@@ -253,9 +254,9 @@ title!("Influenza")
 annotate!(0.1, 0.9, text(modelNames[iBest], :green, 12, :left))
 annotate!(0.1, 0.7, text(modelNames[iWorst], :red, 12, :left))
 txt = "CvM = " * string(Int64(round(iDivs[iBest], digits = 0)))
-annotate!(0.1, 0.85, text(txt, :green, :left, 10))
+annotate!(0.1, 0.85, text(txt, :green, :left, 12))
 txt = "CvM = " * string(Int64(round(iDivs[iWorst], digits = 0)))
-annotate!(0.1, 0.65, text(txt, :red, :left, 10))
+annotate!(0.1, 0.65, text(txt, :red, :left, 12))
 
 
 p2 = plot(x -> x, xlim = (0, 1), label = "Perfect calibration", xlab = "u",
@@ -280,13 +281,14 @@ title!("COVID-19")
 annotate!(0.65, 0.4, text(modelNames[cBest], :green, 12, :left))
 annotate!(0.65, 0.2, text(modelNames[cWorst], :red, 12, :left))
 txt = "CvM = " * string(Int64(round(cDivs[cBest], digits = 0)))
-annotate!(0.65, 0.35, text(txt, :green, :left, 10))
+annotate!(0.65, 0.35, text(txt, :green, :left, 12))
 txt = "CvM = " * string(Int64(round(cDivs[cWorst], digits = 0)))
-annotate!(0.65, 0.15, text(txt, :red, :left, 10))
+annotate!(0.65, 0.15, text(txt, :red, :left, 12))
 
 plot(p1, p2, layout = (1, 2), size = (900, 500), dpi = 300, left_margin = 5Plots.mm,
      bottom_margin = 5Plots.mm)
 savefig(path*"Plots/PIT.png")
+savefig(path*"Plots/PIT.pdf")
 
 
 # Complete plot
@@ -303,8 +305,8 @@ for i = 1:5
         plot!([i-1, i], [j-1, j], color = "black", linestyle = :dash)
     end
 end
-Plots.annotate!(-0.1, 3, Plots.text("Influenza", rotation = 90, 14))
-Plots.annotate!(-0.1, 1, Plots.text("COVID-19", rotation = 90, 14))
+Plots.annotate!(-0.1, 3, Plots.text("Influenza", rotation = 90, 12))
+Plots.annotate!(-0.1, 1, Plots.text("COVID-19", rotation = 90, 12))
 xseq = collect(0:0.01:1)
 xOffs = [0, 1, 2, 3, 4, 0, 1, 2, 3, 4]
 yOffsI = [3, 3, 3, 3, 3, 2, 2, 2, 2, 2]
@@ -330,6 +332,7 @@ for i = 1:10
     Plots.annotate!(0.03 + xOffs[i], yOffsC[i] + 0.8, Plots.text(txt, :left, 12))
 end
 savefig(path*"/Plots/PITall.png")
+savefig(path*"/Plots/PITall.pdf")
 
 
 ### More detailled look into the PIT functions for best baselines
@@ -343,7 +346,7 @@ for h = 1:4
     plot!(PITfun(temp, [h]), label = "h = "*string(h), lw = 1)
 end
 title!("By Horizon")
-annotate!(-0.4, 0.5, text("Influenza", 14, rotation = 90))
+annotate!(-0.4, 0.5, text("Influenza", 12, rotation = 90))
 
 p2 = plot(x -> x, xlim = (0, 1), label = "", xlab = "u", ylab = "F(u)", color = "black", lw = 2,
           linestyle = :dash,foreground_color_legend = nothing,
@@ -361,7 +364,7 @@ for h = 1:4
     temp = cBase.forecast[(cBase.model .== cBest)]
     plot!(PITfun(temp, [h]), label = "h = "*string(h), lw = 1)
 end
-annotate!(-0.4, 0.5, text("COVID-19", 14, rotation = 90))
+annotate!(-0.4, 0.5, text("COVID-19", 12, rotation = 90))
 
 p4 = plot(x -> x, xlim = (0, 1), label = "", xlab = "u", ylab = "F(u)", color = "black", lw = 2,
           linestyle = :dash,foreground_color_legend = nothing,
@@ -373,6 +376,7 @@ end
 
 plot(p1, p2, p3, p4, layout = (2, 2), dpi = 300)
 savefig(path*"/Plots/PITlh.png")
+savefig(path*"/Plots/PITlh.pdf")
 
 
 
@@ -441,24 +445,28 @@ p1 = plot(shpHex.geometry[1], color = colsVec[1], aspect_ratio = 1, grid = false
 for i = 2:52
     plot!(shpHex.geometry[i], color = colsVec[i])
 end
-annotate!(shpHex.xCen, shpHex.yCen, Plots.text.(shpHex.abbr, color = "white", 14))
+annotate!(shpHex.xCen, shpHex.yCen, Plots.text.(shpHex.abbr, color = "white", 12))
 
-for i = 1:9    
+for i = 1:9
     annotate!([2, 4, 8][ceil(Int64, i / 3)], [5.5, 6.5, 6][(i % 3) + 1],
-              Plots.text(modelNames[bestVecUni[i]], color = cols[bestVecUni[i]], :left, 18))
+              Plots.text(modelNames[bestVecUni[i]], color = cols[bestVecUni[i]], :left, 12))
 end
 
-colsVec = cols[cBestVec]
+annotate!(0, 3, text("Influenza", 12, rotation = 90))
 
+colsVec = cols[cBestVec]
 p2 = plot(shpHex.geometry[1], color = colsVec[1], aspect_ratio = 1, grid = false,
           xaxis = false, yaxis = false)
 for i = 2:52
     plot!(shpHex.geometry[i], color = colsVec[i])
 end
-annotate!(shpHex.xCen, shpHex.yCen, Plots.text.(shpHex.abbr, color = "white", 14))
+annotate!(shpHex.xCen, shpHex.yCen, Plots.text.(shpHex.abbr, color = "white", 12))
+annotate!(0, 3, text("COVID-19", 12, rotation = 90))
 
-plot(p1, p2, layout = (2, 1), size = (800, 1000), dpi = 300)
+plot(p1, p2, layout = (2, 1), size = 0.7 .* (800, 1000), dpi = 300)
+
 savefig(path*"/Plots/BestBaseline.png")
+savefig(path*"/Plots/BestBaseline.pdf")
 
 # Next also add the marginal model that uses future data
 # only from times where forecasts are available from hubs
@@ -618,7 +626,7 @@ plot!(Shape([3, 4, 4, 3], [0, 0, 1, 1]), color = 1, alpha = 0.6, linewidth = 0,
 xlims!((0, 1))
 plot!(quantiles, median(calMatL, dims = 1)[1, :], lw = 2, color = 2, label = "Median")
 title!("Best Single Baseline")
-annotate!(-0.4, 0.5, text("Influenza", 14, rotation = 90))
+annotate!(-0.5, 0.5, text("Influenza", 12, rotation = 90))
 
 
 calMatL = zeros(length(locations), length(quantiles))
@@ -684,7 +692,7 @@ plot!(Shape([0; quantiles; 1; 1; reverse(quantiles); 0], [l; reverse(u)]), color
       linewidth = 0, label = "")
 xlims!((0, 1))
 plot!(quantiles, median(calMatL, dims = 1)[1, :], lw = 2, color = 2, label = "")
-annotate!(-0.4, 0.5, text("COVID-19", 14, rotation = 90))
+annotate!(-0.5, 0.5, text("COVID-19", 12, rotation = 90))
 
 calMatL = zeros(length(locations), length(quantiles))
 for l = 1:length(locations)
@@ -726,10 +734,12 @@ plot!(Shape([0; quantiles; 1; 1; reverse(quantiles); 0], [l; reverse(u)]), color
 xlims!((0, 1))
 plot!(quantiles, median(calMatL, dims = 1)[1, :], lw = 2, color = 2, label = "")
 
-plot(p11, p12, p13, p21, p22, p23, layout=(2,3), size = (1000, 600), left_margin = 12Plots.mm,
+plot(p11, p12, p13, p21, p22, p23, layout=(2,3), size = 0.9 .* (1000, 600), left_margin = 12Plots.mm,
      bottom_margin = 5Plots.mm, dpi = 300)
+#
 
 savefig("/Users/lshms101/Desktop/Projects/Baselines/Plots/UniformCalibration2.png")
+savefig("/Users/lshms101/Desktop/Projects/Baselines/Plots/UniformCalibration2.pdf")
 
 
 
@@ -1266,9 +1276,9 @@ vline!([1], lw = 2, color = "black", linestyle = :dash, label = "")
 title!("WIS")
 ylabel!("Influenza")
 annotate!(m + 0.62*(M - m), ylims(current())[2] * 0.6,
-          text(modelNames[argmin(iDivs)], :green, 9, :left))
+          text(modelNames[argmin(iDivs)], :green, 8, :left))
 annotate!(m + 0.62*(M - m), ylims(current())[2] * 0.4,
-          text(modelNames[argmax(iDivs)], :red, 9, :left))
+          text(modelNames[argmax(iDivs)], :red, 8, :left))
 
 # Influenza WIS on logs
 temp = vec(relWIS[2:end, [argmin(iDivs), argmax(iDivs)], 2])
@@ -1282,9 +1292,9 @@ histogram!(relWIS[2:end, argmax(iDivs), 2], alpha = 0.5,  bins = binSeq,
 vline!([1], lw = 2, color = "black", linestyle = :dash, label = "")
 title!("lWIS")
 annotate!(m + 0.62*(M - m), ylims(current())[2] * 0.6,
-          text(modelNames[argmin(iDivs)], :green, 9, :left))
+          text(modelNames[argmin(iDivs)], :green, 8, :left))
 annotate!(m + 0.62*(M - m), ylims(current())[2] * 0.4,
-          text(modelNames[argmax(iDivs)], :red, 9, :left))
+          text(modelNames[argmax(iDivs)], :red, 8, :left))
 
 
 # COVID - original WIS
@@ -1301,9 +1311,9 @@ title!("")
 xlabel!("Scaled Relative Skill Score")
 ylabel!("COVID-19")
 annotate!(m + 0.62*(M - m), ylims(current())[2] * 0.6,
-          text(modelNames[argmin(cDivs)], :green, 9, :left))
+          text(modelNames[argmin(cDivs)], :green, 8, :left))
 annotate!(m + 0.62*(M - m), ylims(current())[2] * 0.4,
-          text(modelNames[argmax(cDivs)], :red, 9, :left))
+          text(modelNames[argmax(cDivs)], :red, 8, :left))
 
 # COVID - WIS on logs
 temp = vec(crelWIS[2:end, [argmin(cDivs), argmax(cDivs)], 2])
@@ -1318,13 +1328,15 @@ vline!([1], lw = 2, color = "black", linestyle = :dash, label = "")
 title!("")
 xlabel!("Scaled Relative Skill Score")
 annotate!(m + 0.62*(M - m), ylims(current())[2] * 0.6,
-          text(modelNames[argmin(cDivs)], :green, 9, :left))
+          text(modelNames[argmin(cDivs)], :green, 8, :left))
 annotate!(m + 0.62*(M - m), ylims(current())[2] * 0.4,
-          text(modelNames[argmax(cDivs)], :red, 9, :left))
+          text(modelNames[argmax(cDivs)], :red, 8, :left))
 
 plot(p1, p2, p3, p4, layout=(2, 2), dpi = 300)
 
 savefig(path*"/Plots/RelativeSkill1.png")
+savefig(path*"/Plots/RelativeSkill1.pdf")
+
 
 sum(relWIS[2:end, argmin(iDivs), 1] .< 1)
 sum(relWIS[2:end, argmax(iDivs), 1] .< 1)
@@ -1384,7 +1396,7 @@ ylabel!("Rank of Forecast Model")
 yticks!(83 .- collect(10:10:80), string.(10:10:80))
 xticks!(1:19, modelNamesShort[(i -> findfirst(iDivs .== sort(iDivs)[i])).(1:19)], rotation = 45)
 title!("WIS")
-annotate!(-4.5, 40, text("Influenza", 14, rotation = 90))
+annotate!(-4.5, 40, text("Influenza", 12, rotation = 90))
 
 p2 = plot(83 .- rMat[1, o, 2], legend = false, lw = 2, color = cols[Int64.(rMat[1, 17, 2])])
 for i = 2:81
@@ -1407,7 +1419,7 @@ ylabel!("")
 ylabel!("Rank of Forecast Model")
 yticks!(59 .- collect(10:10:50), string.(10:10:50))
 xticks!(1:19, modelNamesShort[(i -> findfirst(cDivs .== sort(cDivs)[i])).(1:19)], rotation = 45)
-annotate!(-4.5, 27, text("COVID-19", 14, rotation = 90))
+annotate!(-4.5, 27, text("COVID-19", 12, rotation = 90))
 
 p4 = plot(59 .- crMat[1, o, 2], legend = false, lw = 2, color = cols[Int64.(crMat[1, 11, 2])])
 for i = 2:57
@@ -1418,8 +1430,9 @@ ylabel!("")
 yticks!(59 .- collect(10:10:50), string.(10:10:50))
 xticks!(1:19, modelNamesShort[(i -> findfirst(cDivs .== sort(cDivs)[i])).(1:19)], rotation = 45)
 
-plot(p1, p2, p3, p4, layout = (2, 2), size = (800, 650), dpi = 300)
+plot(p1, p2, p3, p4, layout = (2, 2), size = 0.9 .* (800, 650), dpi = 300)
 savefig(path*"/Plots/RankPlot.png")
+savefig(path*"/Plots/RankPlot.pdf")
 
 
 # Also create a heatmap of Kendall's tau for pairwise comparisons
@@ -1451,77 +1464,77 @@ p1 = heatmap(CI[end:-1:1, :], grid = false, xaxis = false, yaxis = false, clims 
              legend = false, left_margin = 5Plots.mm, bottom_margin = 5Plots.mm)
 for i = 1:19
     temp = modelNamesShort[findfirst(iDivs .== sort(iDivs)[i])]
-    annotate!(0, 20 - i, text(temp, 9, :right))
-    annotate!(i, 0, text(temp, 9, :right, rotation = 60))
+    annotate!(0, 20 - i, text(temp, 8, :right))
+    annotate!(i, 0, text(temp, 8, :right, rotation = 60))
 end
 title!("WIS")
 plot!([0.5, 19.5], [-3, -3], label = "", arrow = :closed, color = "black")
 plot!([-3, -3], [19.5, 0.5], label = "", arrow = :closed, color = "black")
 
-annotate!(10, -4, text("Calibration", 9))
-annotate!(2, -4, text("Good", 9, :left))
-annotate!(18, -4, text("Poor", 9, :right))
+annotate!(10, -4, text("Calibration", 8))
+annotate!(2, -4, text("Good", 8, :left))
+annotate!(18, -4, text("Poor", 8, :right))
 
-annotate!(-6, 10, text("Influenza", 14, rotation = 90))
-annotate!(-4.5, 10, text("Calibration", 9, rotation = 90))
-annotate!(-4.5, 18, text("Good", 9, :right, rotation = 90))
-annotate!(-4.5, 2, text("Poor", 9, :left, rotation = 90))
+annotate!(-6, 10, text("Influenza", 12, rotation = 90))
+annotate!(-4.5, 10, text("Calibration", 8, rotation = 90))
+annotate!(-4.5, 18, text("Good", 8, :right, rotation = 90))
+annotate!(-4.5, 2, text("Poor", 8, :left, rotation = 90))
 
 p2 = heatmap(CIl[end:-1:1, :], grid = false, xaxis = false, yaxis = false, clims = (cLower, 1),
              legend = false, bottom_margin = 5Plots.mm)
 for i = 1:19
     temp = modelNamesShort[findfirst(iDivs .== sort(iDivs)[i])]
-    annotate!(0, 20 - i, text(temp, 9, :right))
-    annotate!(i, 0, text(temp, 9, :right, rotation = 60))
+    annotate!(0, 20 - i, text(temp, 8, :right))
+    annotate!(i, 0, text(temp, 8, :right, rotation = 60))
 end
 title!("lWIS")
 plot!([0.5, 19.5], [-3, -3], label = "", arrow = :closed, color = "black")
 plot!([-3, -3], [19.5, 0.5], label = "", arrow = :closed, color = "black")
 
-annotate!(10, -4, text("Calibration", 9))
-annotate!(2, -4, text("Good", 9, :left))
-annotate!(18, -4, text("Poor", 9, :right))
+annotate!(10, -4, text("Calibration", 8))
+annotate!(2, -4, text("Good", 8, :left))
+annotate!(18, -4, text("Poor", 8, :right))
 
-annotate!(-4.5, 10, text("Calibration", 9, rotation = 90))
-annotate!(-4.5, 18, text("Good", 9, :right, rotation = 90))
-annotate!(-4.5, 2, text("Poor", 9, :left, rotation = 90))
+annotate!(-4.5, 10, text("Calibration", 8, rotation = 90))
+annotate!(-4.5, 18, text("Good", 8, :right, rotation = 90))
+annotate!(-4.5, 2, text("Poor", 8, :left, rotation = 90))
 
 p3 = heatmap(CC[end:-1:1, :], grid = false, xaxis = false, yaxis = false, clims = (cLower, 1),
              legend = false, left_margin = 10Plots.mm, bottom_margin = 5Plots.mm)
 for i = 1:19
     temp = modelNamesShort[findfirst(cDivs .== sort(cDivs)[i])]
-    annotate!(0, 20 - i, text(temp, 9, :right))
-    annotate!(i, 0, text(temp, 9, :right, rotation = 60))
+    annotate!(0, 20 - i, text(temp, 8, :right))
+    annotate!(i, 0, text(temp, 8, :right, rotation = 60))
 end
 plot!([0.5, 19.5], [-3, -3], label = "", arrow = :closed, color = "black")
 plot!([-3, -3], [19.5, 0.5], label = "", arrow = :closed, color = "black")
 
-annotate!(10, -4, text("Calibration", 9))
-annotate!(2, -4, text("Good", 9, :left))
-annotate!(18, -4, text("Poor", 9, :right))
+annotate!(10, -4, text("Calibration", 8))
+annotate!(2, -4, text("Good", 8, :left))
+annotate!(18, -4, text("Poor", 8, :right))
 
-annotate!(-6, 10, text("COVID-19", 14, rotation = 90))
-annotate!(-4.5, 10, text("Calibration", 9, rotation = 90))
-annotate!(-4.5, 18, text("Good", 9, :right, rotation = 90))
-annotate!(-4.5, 2, text("Poor", 9, :left, rotation = 90))
+annotate!(-6, 10, text("COVID-19", 12, rotation = 90))
+annotate!(-4.5, 10, text("Calibration", 8, rotation = 90))
+annotate!(-4.5, 18, text("Good", 8, :right, rotation = 90))
+annotate!(-4.5, 2, text("Poor", 8, :left, rotation = 90))
 
 p4 = heatmap(CCl[end:-1:1, :], grid = false, xaxis = false, yaxis = false, clims = (cLower, 1),
              legend = false, bottom_margin = 5Plots.mm)
 for i = 1:19
     temp = modelNamesShort[findfirst(cDivs .== sort(cDivs)[i])]
-    annotate!(0, 20 - i, text(temp, 9, :right))
-    annotate!(i, 0, text(temp, 9, :right, rotation = 60))
+    annotate!(0, 20 - i, text(temp, 8, :right))
+    annotate!(i, 0, text(temp, 8, :right, rotation = 60))
 end
 plot!([0.5, 19.5], [-3, -3], label = "", arrow = :closed, color = "black")
 plot!([-3, -3], [19.5, 0.5], label = "", arrow = :closed, color = "black")
 
-annotate!(10, -4, text("Calibration", 9))
-annotate!(2, -4, text("Good", 9, :left))
-annotate!(18, -4, text("Poor", 9, :right))
+annotate!(10, -4, text("Calibration", 8))
+annotate!(2, -4, text("Good", 8, :left))
+annotate!(18, -4, text("Poor", 8, :right))
 
-annotate!(-4.5, 10, text("Calibration", 9, rotation = 90))
-annotate!(-4.5, 18, text("Good", 9, :right, rotation = 90))
-annotate!(-4.5, 2, text("Poor", 9, :left, rotation = 90))
+annotate!(-4.5, 10, text("Calibration", 8, rotation = 90))
+annotate!(-4.5, 18, text("Good", 8, :right, rotation = 90))
+annotate!(-4.5, 2, text("Poor", 8, :left, rotation = 90))
 
 dummy_data = fill(missing, 2, 2)
 p_colorbar = heatmap(dummy_data, clims = (cLower, 1.0),
@@ -1538,8 +1551,9 @@ l1 = @layout [a{0.1h}; b{0.8h}; c{0.1h}]
 pBar = plot(pEmpty, p_colorbar, pEmpty, layout = l1, size = (100, 900))
 # Use a custom layout
 l = @layout [[a b; c d] e{0.05w}]
-plot(p1, p2, p3, p4, pBar, layout = l, size = (1000, 900), dpi = 300)
+plot(p1, p2, p3, p4, pBar, layout = l, size = 0.9 .* (1000, 900), dpi = 300)
 savefig(path*"/Plots/RankHeatmap.png")
+savefig(path*"/Plots/RankHeatmap.pdf")
 
 
 # Look at extreme correlation:
