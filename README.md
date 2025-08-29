@@ -4,7 +4,7 @@ This repository contains code and data processing scripts for the paper ["Mind t
 
 ## Data Availability
 
-All input data files, processed datasets, and analysis results are available on [Zenodo](https://doi.org/10.5281/zenodo.16407890)
+All input data files, processed datasets, and analysis results are available on [Zenodo]((https://doi.org/10.5281/zenodo.16992035)
 
 ## Data Sources
 
@@ -22,16 +22,9 @@ All input data files, processed datasets, and analysis results are available on 
 ## Requirements
 
 ### Julia Packages
-Standard packages: CSV, DataFrames, Dates, Plots, StatsBase, Optim, Distributions, BoxCox
+Standard packages: CSV, DataFrames, Dates, Plots, StatsBase, Optim, Distributions, BoxCox, ForecastBaselines
 
 Visualization: Shapefile, GeoDataFrames, LibGEOS, ColorSchemes
-
-### Custom Package
-This analysis requires the BaselineModels.jl package:
-```julia
-using Pkg
-Pkg.add(url="https://github.com/ManuelStapper/BaselineModels.jl", rev="afaafc8714239add0986243c44b58afad1765dbd")
-```
 
 ## Code files
 - **`DataPrep.jl`**: Cleans and filters raw forecast data from forecast hubs. Results are stored on [Zenodo](https://doi.org/10.5281/zenodo.16407890).
