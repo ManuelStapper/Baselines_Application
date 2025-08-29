@@ -4,7 +4,7 @@ This repository contains code and data processing scripts for the paper ["Mind t
 
 ## Data Availability
 
-All input data files, processed datasets, and analysis results are available on [Zenodo]((https://doi.org/10.5281/zenodo.16992035)
+All input data files, processed datasets, and analysis results are available on [Zenodo](https://doi.org/10.5281/zenodo.16992035)
 
 ## Data Sources
 
